@@ -30,34 +30,38 @@ class MyHomePage extends StatefulWidget {
 
 int _selectedIndex = 0;
 
+PageController _myPage = PageController(initialPage: 0);
 class _MyHomePageState extends State<MyHomePage> {
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       backgroundColor: '#1c0b4a'.toColor(),
 
-      body:bodyContent,
-
-
+      body: bodyContent,
 
       floatingActionButton: FloatingActionButton(
         //Floating action button on Scaffold
         onPressed: () {
           setState(() {
             _selectedIndex = -1;
+            _myPage.jumpToPage(4);
           });
         },
+
         child: Container(
           height: 60,
           width: 60,
           decoration: BoxDecoration(
-            shape: BoxShape.circle, // circular shape
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(0,10),
+                blurRadius: 20,
+                color: '#9Aad6ae0'.toColor()
+              )
+            ],
+            shape: BoxShape.circle,
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               colors: [
@@ -76,14 +80,41 @@ class _MyHomePageState extends State<MyHomePage> {
         //icon inside button
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      //floating action button position to center
       bottomNavigationBar: bottomNavigationBar,
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
   Widget get bodyContent {
-    return Container();
+    return PageView(
+      controller: _myPage,
+      onPageChanged: (int) {
+        print('Page Changes to index $int');
+      },
+      children: <Widget>[
+        Center(
+          child: Container(
+            child: Text('Empty Body 0'),
+          ),
+        ),
+        Center(
+          child: Container(
+            child: Text('Empty Body 1'),
+          ),
+        ),
+        Center(
+          child: Container(
+            child: Text('Empty Body 2'),
+          ),
+        ),
+        Center(
+          child: Container(
+            child: Text('Empty Body 3'),
+          ),
+        )
+      ],
+      physics:
+          NeverScrollableScrollPhysics(), // Comment this if you need to use Swipe.
+    );
   }
 
   Widget get bottomNavigationBar {
@@ -105,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 14),
+              padding: const EdgeInsets.only(left: 8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -118,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         _selectedIndex = 0;
+                        _myPage.jumpToPage(0);
                       });
                     },
                   ),
@@ -146,6 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         _selectedIndex = 1;
+                        _myPage.jumpToPage(1);
                       });
                     },
                   ),
@@ -174,6 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         _selectedIndex = 2;
+                        _myPage.jumpToPage(2);
                       });
                     },
                   ),
@@ -188,8 +222,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+
             Padding(
-              padding: const EdgeInsets.only(right: 14),
+              padding: const EdgeInsets.only( right: 8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -202,11 +237,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         _selectedIndex = 3;
+                        _myPage.jumpToPage(3);
                       });
                     },
                   ),
                   Text(
-                    'Settings',
+                    'News',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: _selectedIndex == 3
